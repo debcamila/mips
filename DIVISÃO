@@ -1,0 +1,26 @@
+# DIVISÃO
+# Y = A/B
+# SUPONDO QUE A=$a0, B= $a1
+# $t1 = contador, $t0 e $t3 = divisor; copia do resto
+
+START:
+add $t0, $zero, $a0
+add $t1, $zero, $zero
+add $t3, $zero, $a0
+beq $a0, $zero, EXIT
+beq $a1, $zero, EXCEÇÃO
+
+L1:
+slt $t2, $t0, $a1
+bne $t2, $zero, EXIT
+addi $t1, $t1, 1 #contador
+sub $t0, $t0, $a1
+add $t3, $t0, $zero
+j L1
+
+EXIT:
+add $v0, $t0, $zero #retorno o quociente
+add $v1, $t3, $zero #retorna o resto
+JR $ra
+
+
