@@ -1,0 +1,18 @@
+# Multiplicação
+# Y = A. B
+# Supondo que A= $a0 e B= $a1
+
+Start:
+add $t0, $zero, $zero
+add $t1, $zero, $zero
+beq $a0, $zero, FIM  #Se o A for 0, pula pro FIM
+beq $a1, $zero, FIM  #Se o B for 0, pula pro FIM
+
+L1:
+add $t0, $t0, $a1  #acumulador
+addi $t1, $t1, 1   #contador
+bne $t1, $a0, L1
+
+FIM:
+add $v0, $t0, $zero
+JR $ra
