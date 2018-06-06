@@ -1,0 +1,48 @@
+# EXPONENCIAÇÃO
+# A^B , ex.: 2^3 = 2.2.2 = (2.2).2 = (2+2).2 = (2+2)+ (2+2)
+# SUPONDO QUE A= $a0, B= $a1
+
+add $t0, $zero, $a0
+add $t1, $zero, $a1
+
+PROC:
+aadi $t4, $zero, 0 #contador da multiplicação
+addi $t3, $zero, 0 #somador da multiplicação
+addi $t2, $zero, 1 #contador da potência 
+beq $t1, $zero, POW_ZERO # A^0=1
+beq $t0, $zero, BASE_ZERO # 0^B=0
+beq $t1, $t2, POW_ONE # B==1 OU B^1=B
+add $s0, $zero, $t0 # $s0= guarda o valor da base (A)
+add $s1, $zero, $t0 # $s1= somador total da potência
+
+MULT:
+add $t3, $t3, $s1 # $t3=somador+somador de multiplicação;resultado anterior+ele mesmo
+addi $t4, $t4, 1 #contador da multiplicação ++ 
+beq $t4, $s0, POW #se cont == A(base), termine de multiplicar
+J MULT
+
+POW:
+add $s1, $zero, $t3 #s1 = ultima multiplicação feita 
+addi $t3, $zero, 0 #resta $t3(somador da multiplicação) 
+addi $t4, $zero, 0 #reseta $t4(contador da multiplicação) 
+addi $t2, $t2, 1 #contador da potência ++ 
+beq $t2, $t1, RESULT #se cont == B, Exit (termina a potenciação)
+J MULT
+
+POW_ONE:
+add $v0, $zero, $t0 #se B==1, retorne A(base)
+J EXIT
+
+BASE_ZERO:
+add $v0, $zero, $t3 #se A==0, retorne 0
+J EXIT
+
+POW_ZERO:
+add $v0, $zero, $t2 #se B==0, retorne 1
+J EXIT
+
+RESULT:
+add $v0, $zero, $s1 #retorna $s1 (total da potencia)
+
+EXIT:
+JR $ra
